@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Local simulation script for the survival-agent skill.
+Local simulation script for the agent-survivor skill.
 This simulates time passing and state decay so you can verify the math
 without installing OpenClaw.
 """

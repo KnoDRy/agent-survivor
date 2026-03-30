@@ -2,13 +2,13 @@
 """
 Survival Agent Skill Init Script
 
-This script initializes the survival-agent skill by:
+This script initializes the agent-survivor skill by:
 1. Ensuring the skill directory is installed in the OpenClaw workspace.
 2. Copying default data files from templates/ if they don't exist.
 3. Injecting required heartbeat tasks into ~/.openclaw/HEARTBEAT.md (if not already present).
 
-Run this after copying the survival-agent directory to:
-~/.openclaw/workspace/skills/survival-agent/
+Run this after copying the agent-survivor directory to:
+~/.openclaw/workspace/skills/agent-survivor/
 """
 
 import os
@@ -19,27 +19,27 @@ from pathlib import Path
 # OpenClaw default paths
 OPENCLAW_DIR = Path.home() / ".openclaw"
 HEARTBEAT_PATH = OPENCLAW_DIR / "HEARTBEAT.md"
-SKILL_TARGET = OPENCLAW_DIR / "workspace" / "skills" / "survival-agent"
+SKILL_TARGET = OPENCLAW_DIR / "workspace" / "skills" / "agent-survivor"
 
 # Data files to copy from templates
 DATA_FILES = ["state.json", "home.json", "map.json", "plan.md"]
 
-SURVIVAL_HEARTBEAT_BLOCK = """\n<!-- BEGIN survival-agent heartbeat -->
+SURVIVAL_HEARTBEAT_BLOCK = """\n<!-- BEGIN agent-survivor heartbeat -->
 ## Survival Agent Check (every 30 minutes)
-- Read `~/.openclaw/workspace/skills/survival-agent/state.json`.
+- Read `~/.openclaw/workspace/skills/agent-survivor/state.json`.
 - Apply decay rules based on elapsed time since `last_updated`.
 - Run the survival decision tree once (cook / forage / play / doctor / explore / relax).
 - Write updated state back.
 
 ## Survival Agent Morning Plan (08:00 daily)
 - Read state and plan files.
-- Write today's goals to `~/.openclaw/workspace/skills/survival-agent/plan.md`.
+- Write today's goals to `~/.openclaw/workspace/skills/agent-survivor/plan.md`.
 - Clear `today_events` in state.
 
 ## Survival Agent Evening Review (22:00 daily)
 - Assess plan completion and append review to plan.md.
-- Write diary entry to `~/.openclaw/workspace/skills/survival-agent/diary/YYYY-MM-DD.md`.
-<!-- END survival-agent heartbeat -->
+- Write diary entry to `~/.openclaw/workspace/skills/agent-survivor/diary/YYYY-MM-DD.md`.
+<!-- END agent-survivor heartbeat -->
 """
 
 
@@ -90,7 +90,7 @@ def ensure_skill_installed():
     print(f"[WARN] Skill not found at expected location: {SKILL_TARGET}")
     print(f"[INFO] Current directory: {skill_root}")
 
-    if skill_root.name == "survival-agent":
+    if skill_root.name == "agent-survivor":
         answer = input("Would you like to copy the current directory to the OpenClaw skills folder? [Y/n] ").strip().lower()
         if answer in ("", "y", "yes"):
             SKILL_TARGET.parent.mkdir(parents=True, exist_ok=True)
@@ -103,35 +103,35 @@ def ensure_skill_installed():
             print("[SKIP] Skill not copied. Please copy it manually.")
             return False
     else:
-        print("[SKIP] Please copy the survival-agent directory to:")
+        print("[SKIP] Please copy the agent-survivor directory to:")
         print(f"       {SKILL_TARGET}")
         return False
 
 
 def inject_heartbeat():
-    """Inject survival-agent tasks into HEARTBEAT.md if not already present."""
+    """Inject agent-survivor tasks into HEARTBEAT.md if not already present."""
     if not HEARTBEAT_PATH.exists():
         print(f"[WARN] HEARTBEAT.md not found at: {HEARTBEAT_PATH}")
-        create = input("Create a new HEARTBEAT.md with survival-agent tasks? [Y/n] ").strip().lower()
+        create = input("Create a new HEARTBEAT.md with agent-survivor tasks? [Y/n] ").strip().lower()
         if create in ("", "y", "yes"):
             OPENCLAW_DIR.mkdir(parents=True, exist_ok=True)
             HEARTBEAT_PATH.write_text("# Heartbeat\n" + SURVIVAL_HEARTBEAT_BLOCK, encoding="utf-8")
-            print(f"[OK] Created {HEARTBEAT_PATH} with survival-agent tasks.")
+            print(f"[OK] Created {HEARTBEAT_PATH} with agent-survivor tasks.")
             return True
         else:
             print("[SKIP] HEARTBEAT.md not modified.")
             return False
 
     content = HEARTBEAT_PATH.read_text(encoding="utf-8")
-    if "BEGIN survival-agent heartbeat" in content:
-        print("[OK] survival-agent heartbeat tasks already present in HEARTBEAT.md")
+    if "BEGIN agent-survivor heartbeat" in content:
+        print("[OK] agent-survivor heartbeat tasks already present in HEARTBEAT.md")
         return True
 
     # Append safely
     with open(HEARTBEAT_PATH, "a", encoding="utf-8") as f:
         f.write(SURVIVAL_HEARTBEAT_BLOCK)
 
-    print(f"[OK] Appended survival-agent tasks to {HEARTBEAT_PATH}")
+    print(f"[OK] Appended agent-survivor tasks to {HEARTBEAT_PATH}")
     return True
 
 

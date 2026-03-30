@@ -6,7 +6,7 @@ Add these tasks to your `~/.openclaw/HEARTBEAT.md` (or per-agent heartbeat) to e
 # Heartbeat
 
 ## Every 30 minutes
-- Read `~/.openclaw/workspace/skills/survival-agent/state.json`.
+- Read `~/.openclaw/workspace/skills/agent-survivor/state.json`.
 - Apply decay rules based on elapsed time since `last_updated`.
 - Run the decision tree once (forage / play / doctor / explore / relax).
 - Write updated state back.

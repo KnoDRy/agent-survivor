@@ -21,7 +21,7 @@
 ## 文件结构
 
 ```
-survival-agent/
+agent-survivor/
 ├── SKILL.md              # Skill 核心定义（注入 Agent 上下文的 Prompt）
 ├── README.md             # 本文件
 ├── HEARTBEAT.md.example  # 供参考的 Heartbeat 配置示例
@@ -48,8 +48,8 @@ survival-agent/
 
 1. 将本目录复制到 OpenClaw 的 workspace skills 目录：
    ```bash
-   cp -r survival-agent ~/.openclaw/workspace/skills/
-   cd ~/.openclaw/workspace/skills/survival-agent
+   cp -r agent-survivor ~/.openclaw/workspace/skills/
+   cd ~/.openclaw/workspace/skills/agent-survivor
    ```
 
 2. 运行初始化脚本：
@@ -59,14 +59,14 @@ survival-agent/
    bash scripts/init.sh          # Unix / macOS
    ```
 
-   脚本会自动检查并将 survival-agent 所需的定时任务注入到 `~/.openclaw/HEARTBEAT.md` 中，避免重复注入。
+   脚本会自动检查并将 agent-survivor 所需的定时任务注入到 `~/.openclaw/HEARTBEAT.md` 中，避免重复注入。
 
 3. 重启 OpenClaw Gateway 或发送 `/restart` 使 Skill 生效。
 
 ### 方式二：手动安装
 
 如果你不想使用自动初始化脚本，可以：
-1. 复制本目录到 `~/.openclaw/workspace/skills/survival-agent/`。
+1. 复制本目录到 `~/.openclaw/workspace/skills/agent-survivor/`。
 2. 参考 `HEARTBEAT.md.example`，手动在你的 `~/.openclaw/HEARTBEAT.md` 中加入定时任务。
 3. 重启 Gateway。
 
