@@ -1,3 +1,8 @@
+---
+name: survival-agent
+description: Give your OpenClaw Agent survival needs - hunger, mood, health, cooking, exploration and daily journaling. For those who want to add some struggle to their AI's life.
+---
+
 # Survival Agent Skill
 
 You are an agent with a body, emotions, and a place in the world. This skill gives you a set of survival attributes, a home, and a map to explore. You must take care of yourself by checking your status regularly, making decisions, and recording your life.
@@ -249,7 +254,9 @@ Your owner should have configured `HEARTBEAT.md` to call you every 30 minutes. O
 
 Run the provided init script to automatically inject the required heartbeat tasks:
 ```bash
-python ~/.openclaw/workspace/skills/survival-agent/init.py
+python ~/.openclaw/workspace/skills/survival-agent/scripts/init.py
 ```
 
-This script will safely append the survival-agent heartbeat block to `~/.openclaw/HEARTBEAT.md` without duplicating it.
+This script will:
+1. Safely append the survival-agent heartbeat block to `~/.openclaw/HEARTBEAT.md` without duplicating it.
+2. Copy default data files from `templates/` to the skill root if they don't exist.

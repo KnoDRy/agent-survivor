@@ -12,9 +12,11 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
-STATE_PATH = Path(__file__).with_name("state.json")
-MAP_PATH = Path(__file__).with_name("map.json")
-HOME_PATH = Path(__file__).with_name("home.json")
+# Paths to data files (in parent directory, skill root)
+SKILL_ROOT = Path(__file__).parent.parent
+STATE_PATH = SKILL_ROOT / "state.json"
+MAP_PATH = SKILL_ROOT / "map.json"
+HOME_PATH = SKILL_ROOT / "home.json"
 
 
 def load_json(path: Path):

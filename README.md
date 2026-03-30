@@ -23,16 +23,23 @@
 ```
 survival-agent/
 ├── SKILL.md              # Skill 核心定义（注入 Agent 上下文的 Prompt）
-├── state.json            # 当前状态（属性、坐标、时间戳、技能熟练度）
-├── home.json             # 家的坐标
-├── map.json              # 已探索的地图
-├── plan.md               # 计划与回顾
-├── diary/                # 日记目录
+├── README.md             # 本文件
 ├── HEARTBEAT.md.example  # 供参考的 Heartbeat 配置示例
-├── init.py               # 自动初始化脚本（推荐安装方式）
-├── init.sh               # Unix/macOS 初始化脚本
-├── simulate.py           # 本地模拟脚本（无需安装 OpenClaw 即可测试）
-└── README.md             # 本文件
+├── .gitignore            # Git 忽略配置
+├── scripts/              # 脚本目录
+│   ├── init.py           # 自动初始化脚本（推荐安装方式）
+│   ├── init.sh           # Unix/macOS 初始化脚本
+│   └── simulate.py       # 本地模拟脚本（无需安装 OpenClaw 即可测试）
+├── templates/            # 初始数据模板（init 会复制这些到根目录）
+│   ├── state.json.default
+│   ├── home.json.default
+│   ├── map.json.default
+│   └── plan.md.default
+├── diary/                # 日记目录（运行时生成）
+├── state.json            # 当前状态（运行时数据）
+├── home.json             # 家的坐标（运行时数据）
+├── map.json              # 已探索的地图（运行时数据）
+└── plan.md               # 计划与回顾（运行时数据）
 ```
 
 ## 安装
@@ -47,9 +54,9 @@ survival-agent/
 
 2. 运行初始化脚本：
    ```bash
-   python init.py        # Windows / Linux / macOS
+   python scripts/init.py        # Windows / Linux / macOS
    # 或
-   bash init.sh          # Unix / macOS
+   bash scripts/init.sh          # Unix / macOS
    ```
 
    脚本会自动检查并将 survival-agent 所需的定时任务注入到 `~/.openclaw/HEARTBEAT.md` 中，避免重复注入。
@@ -68,8 +75,8 @@ survival-agent/
 如果你还没有安装 OpenClaw，可以用 `simulate.py` 验证状态衰减、烹饪升级、黑暗料理和决策逻辑：
 
 ```bash
-python simulate.py        # 模拟过去 2 小时
-python simulate.py 8.0    # 模拟过去 8 小时
+python scripts/simulate.py        # 模拟过去 2 小时
+python scripts/simulate.py 8.0    # 模拟过去 8 小时
 ```
 
 运行后查看 `state.json` 和 `map.json` 的变化。
