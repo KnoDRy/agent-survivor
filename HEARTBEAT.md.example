@@ -1,0 +1,23 @@
+# Survival Agent Heartbeat Example
+
+Add these tasks to your `~/.openclaw/HEARTBEAT.md` (or per-agent heartbeat) to enable the survival skill.
+
+```markdown
+# Heartbeat
+
+## Every 30 minutes
+- Read `~/.openclaw/workspace/skills/survival-agent/state.json`.
+- Apply decay rules based on elapsed time since `last_updated`.
+- Run the decision tree once (forage / play / doctor / explore / relax).
+- Write updated state back.
+
+## 08:00 daily
+- Run the morning plan routine: write today's goals to `plan.md`.
+- Clear `today_events` in `state.json`.
+
+## 22:00 daily
+- Run the evening review: assess plan completion and append review to `plan.md`.
+- Write diary entry to `diary/YYYY-MM-DD.md`.
+```
+
+In practice, OpenClaw will wake the agent on the heartbeat schedule. The agent will use the `read` and `write` tools to interact with the survival skill files automatically because `SKILL.md` is injected into its context.

@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""
+Survival Agent Skill Init Script
+
+This script initializes the survival-agent skill by:
+1. Ensuring the skill directory is installed in the OpenClaw workspace.
+2. Injecting required heartbeat tasks into ~/.openclaw/HEARTBEAT.md (if not already present).
+
+Run this after copying the survival-agent directory to:
+~/.openclaw/workspace/skills/survival-agent/
+"""
+
+import os
+import shutil
+import sys
+from pathlib import Path
+
+# OpenClaw default paths
+OPENCLAW_DIR = Path.home() / ".openclaw"
+HEARTBEAT_PATH = OPENCLAW_DIR / "HEARTBEAT.md"
+SKILL_TARGET = OPENCLAW_DIR / "workspace" / "skills" / "survival-agent"
+
+SURVIVAL_HEARTBEAT_BLOCK = """\n<!-- BEGIN survival-agent heartbeat -->
+## Survival Agent Check (every 30 minutes)
+- Read `~/.openclaw/workspace/skills/survival-agent/state.json`.
+- Apply decay rules based on elapsed time since `last_updated`.
+- Run the survival decision tree once (cook / forage / play / doctor / explore / relax).
+- Write updated state back.
+
+## Survival Agent Morning Plan (08:00 daily)
+- Read state and plan files.
+- Write today's goals to `~/.openclaw/workspace/skills/survival-agent/plan.md`.
+- Clear `today_events` in state.
+
+## Survival Agent Evening Review (22:00 daily)
+- Assess plan completion and append review to plan.md.
+- Write diary entry to `~/.openclaw/workspace/skills/survival-agent/diary/YYYY-MM-DD.md`.
+<!-- END survival-agent heartbeat -->
+"""
+
+
+def ensure_skill_installed():
+    """Check if the skill is in the OpenClaw workspace. If not, offer to copy it."""
+    if SKILL_TARGET.exists():
+        print(f"[OK] Skill already installed at: {SKILL_TARGET}")
+        return True
+
+    current_dir = Path(__file__).parent.resolve()
+    print(f"[WARN] Skill not found at expected location: {SKILL_TARGET}")
+    print(f"[INFO] Current directory: {current_dir}")
+
+    if current_dir.name == "survival-agent":
+        answer = input("Would you like to copy the current directory to the OpenClaw skills folder? [Y/n] ").strip().lower()
+        if answer in ("", "y", "yes"):
+            SKILL_TARGET.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(current_dir, SKILL_TARGET)
+            print(f"[OK] Copied skill to: {SKILL_TARGET}")
+            return True
+        else:
+            print("[SKIP] Skill not copied. Please copy it manually.")
+            return False
+    else:
+        print("[SKIP] Please copy the survival-agent directory to:")
+        print(f"       {SKILL_TARGET}")
+        return False
+
+
+def inject_heartbeat():
+    """Inject survival-agent tasks into HEARTBEAT.md if not already present."""
+    if not HEARTBEAT_PATH.exists():
+        print(f"[WARN] HEARTBEAT.md not found at: {HEARTBEAT_PATH}")
+        create = input("Create a new HEARTBEAT.md with survival-agent tasks? [Y/n] ").strip().lower()
+        if create in ("", "y", "yes"):
+            OPENCLAW_DIR.mkdir(parents=True, exist_ok=True)
+            HEARTBEAT_PATH.write_text("# Heartbeat\n" + SURVIVAL_HEARTBEAT_BLOCK, encoding="utf-8")
+            print(f"[OK] Created {HEARTBEAT_PATH} with survival-agent tasks.")
+            return True
+        else:
+            print("[SKIP] HEARTBEAT.md not modified.")
+            return False
+
+    content = HEARTBEAT_PATH.read_text(encoding="utf-8")
+    if "BEGIN survival-agent heartbeat" in content:
+        print("[OK] survival-agent heartbeat tasks already present in HEARTBEAT.md")
+        return True
+
+    # Append safely
+    with open(HEARTBEAT_PATH, "a", encoding="utf-8") as f:
+        f.write(SURVIVAL_HEARTBEAT_BLOCK)
+
+    print(f"[OK] Appended survival-agent tasks to {HEARTBEAT_PATH}")
+    return True
+
+
+def main():
+    print("=" * 50)
+    print("Survival Agent Skill Init")
+    print("=" * 50)
+
+    skill_ok = ensure_skill_installed()
+    heartbeat_ok = inject_heartbeat()
+
+    print("-" * 50)
+    if skill_ok and heartbeat_ok:
+        print("Initialization complete!")
+        print("Next steps:")
+        print("1. Restart your OpenClaw Gateway or send /restart.")
+        print("2. The agent will begin checking survival state every 30 minutes.")
+    else:
+        print("Initialization incomplete. Please fix the warnings above and re-run.")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

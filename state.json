@@ -1,0 +1,14 @@
+{
+  "cash": 100,
+  "hunger": 80,
+  "mood": 60,
+  "health": 90,
+  "position": { "x": 0, "y": 0 },
+  "last_updated": "2026-03-30T08:00:00+08:00",
+  "today_events": [],
+  "skills": {
+    "cooking": 0,
+    "gardening": 0,
+    "crafting": 0
+  }
+}
