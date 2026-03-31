@@ -18,7 +18,7 @@ from pathlib import Path
 
 # OpenClaw default paths
 OPENCLAW_DIR = Path.home() / ".openclaw"
-HEARTBEAT_PATH = OPENCLAW_DIR / "HEARTBEAT.md"
+HEARTBEAT_PATH = OPENCLAW_DIR / "workspace" / "HEARTBEAT.md"
 SKILL_TARGET = OPENCLAW_DIR / "workspace" / "skills" / "agent-survivor"
 
 # Data files to copy from templates
