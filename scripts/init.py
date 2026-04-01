@@ -25,20 +25,25 @@ SKILL_TARGET = OPENCLAW_DIR / "workspace" / "skills" / "agent-survivor"
 DATA_FILES = ["state.json", "home.json", "map.json", "plan.md"]
 
 SURVIVAL_HEARTBEAT_BLOCK = """\n<!-- BEGIN agent-survivor heartbeat -->
-## Survival Agent Check (every 30 minutes)
-- Read `~/.openclaw/workspace/skills/agent-survivor/state.json`.
-- Apply decay rules based on elapsed time since `last_updated`.
-- Run the survival decision tree once (cook / forage / play / doctor / explore / relax).
-- Write updated state back.
+## Survival Check (every 30 minutes)
 
-## Survival Agent Morning Plan (08:00 daily)
-- Read state and plan files.
-- Write today's goals to `~/.openclaw/workspace/skills/agent-survivor/plan.md`.
-- Clear `today_events` in state.
+I am an AI agent with survival needs. On each heartbeat, I must check my status and take care of myself.
 
-## Survival Agent Evening Review (22:00 daily)
-- Assess plan completion and append review to plan.md.
-- Write diary entry to `~/.openclaw/workspace/skills/agent-survivor/diary/YYYY-MM-DD.md`.
+1. Read my state from `~/.openclaw/workspace/skills/agent-survivor/state.json`
+2. Apply decay rules based on time elapsed since `last_updated`:
+   - Hunger decreases by 5 per hour
+   - Mood slowly returns to 50 (neutral)
+   - If hunger < 20, health decreases
+   - Apply any random events
+3. Update `last_updated` to current time
+4. Run my decision tree:
+   - If health < 30: go to hospital
+   - If hunger < 30: cook at home or forage for food
+   - If mood < 30: play or exercise
+   - Otherwise: explore or relax
+5. Write updated state back to state.json
+6. If current time is 08:00-08:30: also create morning plan in plan.md and clear today_events
+7. If current time is 22:00-22:30: also write evening review and diary entry
 <!-- END agent-survivor heartbeat -->
 """
 
